@@ -1,0 +1,7 @@
+---
+- name: Install puppet agent and configure puppet repo
+  hosts: wapp-test-01
+  sudo: yes
+
+  roles:
+    - common

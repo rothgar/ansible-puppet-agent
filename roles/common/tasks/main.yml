@@ -1,0 +1,14 @@
+---
+- name: Copy repo files
+  copy: src=/srv/ansible/playbooks/puppet/roles/common/files/puppetlabs-el{{ ansible_lsb.major_release }}.repo dest=/etc/yum.repos.d/puppetlabs.repo
+    owner=root group=root mode=0644
+- name: Copy GPG key
+  copy: src=/srv/ansible/playbooks/puppet/roles/common/files/RPM-GPG-KEY-puppetlabs dest=/etc/pki/rpm-gpg/RPM-GPG-KEY-puppetlabs
+    owner=root group=root mode=0644
+#- name: enable rhn-optional repository (for dependancies)
+# Need to make a test for registration
+#  command: /usr/sbin/subscription-manager 
+- name: Update repository
+  command: /usr/bin/yum -e 0 check-update >> /dev/null 2>&1
+- name: Install puppet agent
+  yum: pkg=puppet state=latest
