@@ -2,16 +2,13 @@
 - name: Copy repo files
   copy: src=/srv/ansible/playbooks/puppet/roles/common/files/puppetlabs-el{{ ansible_lsb.major_release }}.repo dest=/etc/yum.repos.d/puppetlabs.repo
     owner=root group=root mode=0644
-- name: Copy GPG key
+  copy: src=/srv/ansible/playbooks/puppet/roles/common/files/epel{{ ansible_lsb.major_release }}.repo dest=/etc/yum.repos.d/epel.repo
+    owner=root group=root mode=0644
+- name: Copy GPG keys
   copy: src=/srv/ansible/playbooks/puppet/roles/common/files/RPM-GPG-KEY-puppetlabs dest=/etc/pki/rpm-gpg/RPM-GPG-KEY-puppetlabs
     owner=root group=root mode=0644
-# Need to make a test for registration
-- name: enable rhel-server-optional-rpms repository for dependancies
-  when: ansible_os_family == "RedHat" and ansible_lsb.major_release | int >=6
-  command: /usr/sbin/subscription-manager repos --enable rhel-{{ ansible_lsb.major_release }}-server-option-rpms
-- name: Enable EPEL repository for dependancies on RHEL5
-  when: ansible_os_family == "RedHat" and ansible_lsb.major_release | int = 5
-  command: rpm -ivh http://download.fedoraproject.org/pub/epel/5/x86_64/epel-release-5-4.noarch.rpm
+  copy: src=/srv/ansible/playbooks/puppet/roles/common/files/RPM-GPG-KEY-EPEL-{{ ansible_lsb.major_release}} dest=/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL
+    owner=root group=root mode=0644
 #- name: Update repository
 #  command: /usr/bin/yum -e 0 check-update >> /dev/null 2>&1
 - name: Install puppet agent
