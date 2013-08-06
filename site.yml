@@ -1,6 +1,6 @@
 ---
 - name: Install puppet agent and configure puppet repo
-  hosts: mgt2
+  hosts: all
   sudo: yes
 
   roles:
