@@ -1,15 +1,5 @@
 ---
-- name: Copy repo files
-  copy: src=/srv/ansible/playbooks/puppet/roles/common/files/puppetlabs-el{{ ansible_lsb.major_release }}.repo dest=/etc/yum.repos.d/puppetlabs.repo
-    owner=root group=root mode=0644
-  copy: src=/srv/ansible/playbooks/puppet/roles/common/files/epel{{ ansible_lsb.major_release }}.repo dest=/etc/yum.repos.d/epel.repo
-    owner=root group=root mode=0644
-- name: Copy GPG keys
-  copy: src=/srv/ansible/playbooks/puppet/roles/common/files/RPM-GPG-KEY-puppetlabs dest=/etc/pki/rpm-gpg/RPM-GPG-KEY-puppetlabs
-    owner=root group=root mode=0644
-  copy: src=/srv/ansible/playbooks/puppet/roles/common/files/RPM-GPG-KEY-EPEL-{{ ansible_lsb.major_release}} dest=/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL
-    owner=root group=root mode=0644
-#- name: Update repository
-#  command: /usr/bin/yum -e 0 check-update >> /dev/null 2>&1
+- name: Install puppet repo
+yum: name=http://yum.puppetlabs.com/puppetlabs-release-el-{{ ansible_lsb.major_release }}.noarch.rpm state=present
 - name: Install puppet agent
   yum: pkg=puppet state=latest
